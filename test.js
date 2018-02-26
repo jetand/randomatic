@@ -23,7 +23,7 @@ describe('randomatic', function() {
   it('should throw an error when no arguments are passed:', function() {
     assert.throws(function() {
       randomize();
-    }, /randomatic expects a string or number\./);
+    }, /randomatic expects pattern to be a string or a number\./);
   });
 
   it('should generate a randomized string of the given length:', function() {
@@ -220,5 +220,33 @@ describe('randomatic', function() {
     var actual = randomize('?', 16, {chars: 'jonathan'});
     assert(test(/[jonathan]/, actual));
     assert.equal(actual.length, 16);
+  });
+  
+  it('should return empty string when length is negative', function() {
+    var actual = randomize('A', -1);
+    assert.equal(actual.length, 0);
+  });
+
+  it('should return empty string when length is zero', function() {
+    var actual = randomize('A', 0);
+    assert.equal(actual.length, 0);
+  });
+
+  it('should throw an error when length is not a number', function() {
+    assert.throws(function() {
+      randomize('?', true);
+    }, /randomatic expects length to be a number\./);
+  });
+
+  it('should throw an error when options.chars is not a string', function() {
+    assert.throws(function() {
+      randomize('?', 16, {chars: true});
+    }, /randomatic expects options.chars to be a string\./);
+  });
+
+  it('should throw an error when passing in an invalid pattern', function() {
+    assert.throws(function() {
+      randomize('b', 20);
+    }, /randomatic pattern is not a valid pattern. Allowed patterns are/);
   });
 });
